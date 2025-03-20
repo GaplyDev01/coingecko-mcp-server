@@ -108,7 +108,13 @@ This is an MCP (Marketplace Component Program) server compatible with AI systems
 2. In Claude Desktop, install the MCP by providing the server URL (e.g., `http://localhost:3000`)
 3. Claude can now access cryptocurrency data through the MCP interface
 
-The server provides a simple RESTful API that serves as a wrapper around the CoinGecko API, making it easy to get cryptocurrency data in your AI workflows.
+The server implements the full MCP specification with JSON-RPC 2.0:
+
+- **JSON-RPC 2.0 Endpoint**: `/rpc` - Handles all method calls from AI clients
+- **Schema Definition**: `/mcp/schema` - Defines available tools and parameters
+- **Standardized Communication**: Follows MCP protocol for seamless AI integration
+
+For detailed integration instructions, see [MCP_INTEGRATION.md](MCP_INTEGRATION.md).
 
 ## Pro API vs Free API
 

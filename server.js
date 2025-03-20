@@ -2,6 +2,11 @@ const express = require('express');
 const { CoinGeckoClient } = require('coingecko-api-v3');
 require('dotenv').config(); // Load environment variables from .env file
 
+// Import the JSON-RPC middleware
+const jsonRpcMiddleware = require('./mcp');
+// Import MCP schemas
+const mcpSchemas = require('./mcp-schema');
+
 // Initialize Express
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,6 +20,14 @@ const client = new CoinGeckoClient({
 
 // Middleware
 app.use(express.json());
+
+// JSON-RPC endpoint for MCP
+app.post('/rpc', jsonRpcMiddleware);
+
+// MCP Schema endpoint
+app.get('/mcp/schema', (req, res) => {
+  res.json(mcpSchemas);
+});
 
 // Basic health check route
 app.get('/', async (req, res) => {
