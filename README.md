@@ -1,48 +1,67 @@
-# CoinGecko API Server
+# CoinGecko API Server MCP
 
-A Node.js Express server that provides a simplified and configurable interface to the CoinGecko cryptocurrency data API. This server supports both the free public API and the Pro API with automatic fallback.
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+A powerful and flexible Node.js Express server that provides a comprehensive interface to the CoinGecko cryptocurrency data API. This server supports both the free public API and the Pro API with automatic fallback.
+
+## Quick Start
+
+```bash
+# Install and run with npx
+npx coingecko-api-server
+
+# Or clone and install manually
+git clone https://github.com/GaplyDev01/coingecko-api-server.git
+cd coingecko-api-server
+npm install
+npm run setup
+npm start
+```
 
 ## Features
 
-- Comprehensive cryptocurrency data access
-- Support for both CoinGecko Free and Pro APIs
-- Automatic fallback to free API during development
-- Simple RESTful endpoints
-- Detailed error handling
-- Environment variable configuration
+- 🔄 **Dual API Support**: Seamlessly works with both CoinGecko Free and Pro APIs
+- 🔙 **Automatic Fallback**: Falls back to free API during development
+- 🔌 **RESTful Endpoints**: Simple and intuitive API interface
+- 🛡️ **Robust Error Handling**: Detailed error messages and proper status codes
+- 🧩 **Simple Setup**: Quick installation with guided setup
+- 📝 **Comprehensive Documentation**: Clear usage instructions
 
-## Table of Contents
+## Setup Options
 
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [API Endpoints](#api-endpoints)
-- [Using CoinGecko Pro](#using-coingecko-pro)
-- [Development](#development)
-- [Troubleshooting](#troubleshooting)
+### Option 1: Using npx (Recommended)
 
-## Installation
+This is the fastest way to get started:
 
-1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/coingecko-api-server.git
+npx coingecko-api-server
+```
+
+The interactive setup will:
+1. Ask where to install the server
+2. Clone the repository
+3. Install dependencies
+4. Prompt for your CoinGecko API key (optional)
+5. Configure your server port
+
+### Option 2: Manual Setup
+
+If you prefer to set up manually:
+
+```bash
+# Clone the repository
+git clone https://github.com/GaplyDev01/coingecko-api-server.git
 cd coingecko-api-server
-```
 
-2. Install dependencies:
-```bash
+# Install dependencies
 npm install
-```
 
-3. Create a `.env` file based on the example:
-```bash
-cp .env.example .env
-```
+# Run the setup script
+npm run setup
 
-4. Edit the `.env` file to add your CoinGecko API key (if you have one)
-
-5. Start the server:
-```bash
-node server.js
+# Start the server
+npm start
 ```
 
 ## Configuration
@@ -53,90 +72,69 @@ The server can be configured using environment variables in the `.env` file:
 |----------|-------------|---------|
 | `PORT` | The port the server will listen on | `3000` |
 | `COINGECKO_API_KEY` | Your CoinGecko Pro API key | - |
-| `CACHE_REFRESH_INTERVAL` | Cache refresh interval in minutes | `60` |
 
 ## API Endpoints
 
-The server provides the following endpoints:
+The server provides access to all essential CoinGecko API endpoints:
 
-### Basic
+### Basic Endpoints
 
-- `GET /` - Health check
 - `GET /api/ping` - Check CoinGecko API status
 
 ### Price Data
 
 - `GET /api/simple/price` - Get price data for specified coins
   - Query params: `ids`, `vs_currencies`, `include_market_cap`, `include_24hr_vol`, `include_24hr_change`, `include_last_updated_at`, `precision`
-  
-- `GET /api/simple/token_price/:id` - Get token price by contract address
-  - Path params: `id` (blockchain id)
-  - Query params: `contract_addresses`, `vs_currencies`, `include_market_cap`, `include_24hr_vol`, `include_24hr_change`, `include_last_updated_at`, `precision`
 
 - `GET /api/simple/supported_vs_currencies` - Get list of supported vs currencies
 
-### Coins
+### Coin Data
 
-- `GET /api/coins/list` - Get list of all coins
-  - Query params: `include_platform`
-  
 - `GET /api/coins/markets` - Get market data for coins
   - Query params: `vs_currency`, `ids`, `category`, `order`, `per_page`, `page`, `sparkline`, `price_change_percentage`
-  
-- `GET /api/coins/:coinId` - Get coin details
-  - Path params: `coinId`
-  - Query params: `localization`, `tickers`, `market_data`, `community_data`, `developer_data`, `sparkline`
 
-- Plus many more coin-specific endpoints (history, market charts, OHLC data)
-
-### Additional Data
+### Market Data
 
 - `GET /api/global` - Get global cryptocurrency data
 - `GET /api/search/trending` - Get trending coins
-- `GET /api/exchanges` - Get exchange data
-- `GET /api/asset_platforms` - Get asset platforms
-- `GET /api/nfts` - Get NFT data
-- And many more...
 
-See the [CoinGecko API Documentation](https://www.coingecko.com/api/documentation) for detailed information about all available endpoints.
+Full API documentation can be found in the [CoinGecko API Documentation](https://www.coingecko.com/api/documentation).
 
-## Using CoinGecko Pro
+## MCP Integration Information
 
-This server supports the CoinGecko Pro API for increased rate limits and additional features. See [USING_COINGECKO_PRO.md](USING_COINGECKO_PRO.md) for detailed setup instructions.
+This is an MCP (Marketplace Component Program) server compatible with AI systems like Claude. To use this server in Claude Desktop:
 
-Key benefits of using the Pro API:
-- Higher rate limits
-- Lower latency
-- Additional endpoints
-- Commercial usage rights
+1. Start the CoinGecko API server locally
+2. In Claude Desktop, install the MCP by providing the server URL (e.g., `http://localhost:3000`)
+3. Claude can now access cryptocurrency data through the MCP interface
+
+The server provides a simple RESTful API that serves as a wrapper around the CoinGecko API, making it easy to get cryptocurrency data in your AI workflows.
+
+## Pro API vs Free API
+
+This server supports both the CoinGecko Pro API and the free API:
+
+- **Pro API**: Higher rate limits, no throttling, additional endpoints. Requires an API key.
+- **Free API**: Limited to ~30 calls/minute with potential rate limiting.
+
+The server automatically detects if an API key is provided and uses the appropriate API. If no key is provided, it will fall back to the free API, which is ideal for development or personal use.
+
+For more details about the Pro API setup, see [USING_COINGECKO_PRO.md](USING_COINGECKO_PRO.md).
 
 ## Development
 
-For development purposes, the server will automatically fall back to the free CoinGecko API if no API key is provided. This allows for easier local development without requiring a Pro subscription.
+```bash
+# Run in development mode with hot reload
+npm run dev
+```
 
-To contribute to this project:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Troubleshooting
-
-Common issues:
-
-- **429 Too Many Requests**: You've exceeded the rate limit. With the free API, this is typically 10-30 calls per minute. Consider upgrading to a Pro plan.
-- **401 Unauthorized**: Your API key is invalid or expired.
-- **403 Forbidden**: You're trying to access endpoints not included in your plan.
-- **404 Not Found**: The resource or endpoint doesn't exist.
-- **Connection Issues**: The CoinGecko API might be experiencing downtime. Check their status page.
+The server uses direct fetch calls to the CoinGecko API, ensuring compatibility with both free and Pro versions.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
-- [CoinGecko](https://www.coingecko.com/) for providing the cryptocurrency data API
-- [coingecko-api-v3](https://www.npmjs.com/package/coingecko-api-v3) for the Node.js client library 
+- [CoinGecko](https://www.coingecko.com/) for the cryptocurrency data API
+- [Anthropic](https://www.anthropic.com/) for Claude AI and the MCP program 
